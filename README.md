@@ -1,4 +1,4 @@
-# Special Winner
+# Chore Chart
 
 Full-stack task manager with JWT authentication. React + Vite frontend, Express + MongoDB backend, Docker Compose for local full-stack runs.
 
@@ -22,7 +22,7 @@ Full-stack task manager with JWT authentication. React + Vite frontend, Express 
 ## Structure
 
 ```
-special-winner/
+chore-chart/
 ├── task-management-backend/
 │   ├── models/
 │   ├── routes/
@@ -50,8 +50,8 @@ special-winner/
 ## Run with Docker
 
 ```bash
-git clone https://github.com/bugship/special-winner.git
-cd special-winner
+git clone https://github.com/bugship/chore-chart.git
+cd chore-chart
 docker compose up --build
 ```
 

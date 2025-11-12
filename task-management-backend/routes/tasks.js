@@ -1,12 +1,19 @@
+/**
+ * Task routes — all endpoints require a valid JWT (authMiddleware).
+ * Tasks are always scoped to req.userId from the token payload.
+ */
 import express from "express";
 import jwt from "jsonwebtoken";
 import Task from "../models/Task.js";
 
 const router = express.Router();
 
-// Middleware to verify JWT
+/**
+ * Express middleware: verify Bearer token and attach userId to the request.
+ */
 const authMiddleware = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  const header = req.headers.authorization || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7) : null;
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
@@ -20,7 +27,10 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-// Get all tasks
+/**
+ * GET /api/tasks?status=incomplete|complete
+ * Lists the authenticated user's tasks, optionally filtered by status.
+ */
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const { status } = req.query;
@@ -36,7 +46,11 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// Create task
+/**
+ * POST /api/tasks
+ * Body: { title, description?, priority? }
+ * Creates a task owned by the authenticated user.
+ */
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { title, description, priority } = req.body;
@@ -57,12 +71,16 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-// Update task
+/**
+ * PUT /api/tasks/:id
+ * Updates fields on a task the user owns (title, description, status, priority).
+ */
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const { title, description, status, priority } = req.body;
 
+    // Scope by userId so one user cannot edit another's task.
     const task = await Task.findOne({ _id: id, userId: req.userId });
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
@@ -84,7 +102,10 @@ router.put("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// Delete task
+/**
+ * DELETE /api/tasks/:id
+ * Deletes a task owned by the authenticated user.
+ */
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;

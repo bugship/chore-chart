@@ -1,3 +1,12 @@
+/**
+ * Tasks page — main board after login.
+ *
+ * Features:
+ *  - List tasks for the current user (optional status filter)
+ *  - Create task form (title, description, priority)
+ *  - Toggle complete / delete
+ *  - Logout
+ */
 import { useState, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 
@@ -12,6 +21,7 @@ function Tasks() {
   const [error, setError] = useState("");
   const { token, logout } = useAuth();
 
+  /** Fetch tasks from the API, applying the status filter when not "all". */
   const fetchTasks = async () => {
     try {
       const url =
@@ -29,6 +39,7 @@ function Tasks() {
     }
   };
 
+  /** Create a task then append it to local state. */
   const addTask = async (e) => {
     e.preventDefault();
     try {
@@ -49,6 +60,7 @@ function Tasks() {
     }
   };
 
+  /** PATCH-style update via PUT for status/title/etc. */
   const updateTask = async (id, updates) => {
     try {
       const response = await fetch(
@@ -70,6 +82,7 @@ function Tasks() {
     }
   };
 
+  /** Delete a task and remove it from local state. */
   const deleteTask = async (id) => {
     try {
       const response = await fetch(
@@ -87,6 +100,7 @@ function Tasks() {
     }
   };
 
+  // Refetch whenever the filter changes or the auth token updates.
   useEffect(() => {
     fetchTasks();
   }, [filter, token]);

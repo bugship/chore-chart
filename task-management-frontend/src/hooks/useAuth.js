@@ -1,3 +1,7 @@
+/**
+ * useAuth — convenience hook for login, register, and logout flows.
+ * Talks to VITE_API_URL (e.g. http://localhost:5001/api).
+ */
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +10,7 @@ export const useAuth = () => {
   const { token, setToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  /** Authenticate existing user; stores JWT and redirects to the task board. */
   const login = async (email, password) => {
     try {
       const response = await fetch(
@@ -25,6 +30,7 @@ export const useAuth = () => {
     }
   };
 
+  /** Create account, store JWT, redirect home. */
   const register = async (email, password) => {
     try {
       const response = await fetch(
@@ -44,6 +50,7 @@ export const useAuth = () => {
     }
   };
 
+  /** Clear token and return to the login page. */
   const logout = () => {
     setToken(null);
     navigate("/login");

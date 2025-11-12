@@ -11,7 +11,7 @@
   "keywords": [],
   "author": "bugship",
   "license": "MIT",
-  "description": "Express + MongoDB API for the Special Winner task manager",
+  "description": "Express + MongoDB API for the Chore Chart task manager",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",

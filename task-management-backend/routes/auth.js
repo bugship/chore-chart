@@ -1,10 +1,18 @@
+/**
+ * Auth routes — register and login.
+ * Both endpoints return a short-lived JWT (1h) used by the tasks API.
+ */
 import express from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 const router = express.Router();
 
-// Register
+/**
+ * POST /api/auth/register
+ * Body: { email, password }
+ * Creates a user and returns { token }.
+ */
 router.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -19,6 +27,7 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Password hashing happens in the User pre-save hook.
     const user = new User({ email, password });
     await user.save();
 
@@ -31,7 +40,11 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login
+/**
+ * POST /api/auth/login
+ * Body: { email, password }
+ * Validates credentials and returns { token }.
+ */
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -43,6 +56,7 @@ router.post("/login", async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
+      // Same message as bad password to avoid leaking which emails exist.
       return res.status(400).json({ message: "Invalid credentials" });
     }
 

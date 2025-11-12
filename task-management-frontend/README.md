@@ -1,6 +1,6 @@
-# Task Manager Frontend
+# Chore Chart
 
-React + Vite UI for the Special Winner task management app.
+React + Vite UI for the Chore Chart task management app.
 
 ## Scripts
 

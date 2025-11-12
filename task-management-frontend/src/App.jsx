@@ -1,3 +1,8 @@
+/**
+ * Top-level routes.
+ * Public: /login, /register
+ * Protected: / (task board) — requires JWT via PrivateRoute
+ */
 import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/Login";

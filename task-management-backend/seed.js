@@ -1,3 +1,9 @@
+/**
+ * seed.js — populate MongoDB with demo users and tasks for local testing.
+ *
+ * Usage: npm run seed  (requires MONGODB_URI in .env)
+ * WARNING: clears existing users and tasks before inserting sample data.
+ */
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
@@ -11,9 +17,11 @@ const seed = async () => {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log("Connected to MongoDB");
 
+    // Wipe collections so the seed is idempotent for demos.
     await User.deleteMany({});
     await Task.deleteMany({});
 
+    // Insert already-hashed passwords (bypass model hooks by using insertMany).
     const users = await User.insertMany([
       {
         email: "user1@example.com",
