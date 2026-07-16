@@ -1,4 +1,6 @@
-# Chore Chart
+# Full-Stack Task Manager
+
+> Repository: `chore-chart` · https://github.com/bugship/chore-chart
 
 Full-stack task manager with JWT authentication. React + Vite frontend, Express + MongoDB backend, Docker Compose for local full-stack runs.
 
